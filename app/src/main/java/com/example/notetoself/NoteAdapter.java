@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder> {
 
-    private List<Note> mNoteList;
-    private MainActivity mMainActivity;
+    private final List<Note> mNoteList;
+    private final MainActivity mMainActivity;
 
     public NoteAdapter(MainActivity mainActivity, List<Note> noteList) {
 
