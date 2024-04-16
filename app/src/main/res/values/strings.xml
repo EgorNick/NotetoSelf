@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Заметки</string>
+    <string name="action_settings">Настройки</string>
+    <!-- Strings used for fragments for navigation -->
+
+    <string name="action_add">Добавить</string>
+    <string name="title_hint">Заголовок</string>
+    <string name="description_hint">Описание</string>
+    <string name="idea_text">Идея</string>
+    <string name="important_text">Важное</string>
+    <string name="todo_text">Сделать</string>
+    <string name="cancel_button">Назад</string>
+    <string name="delete_button" translatable="false">Удалить</string>
+
+    <string name="ok_button">ОК</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="theme_title" translatable="false">Тема</string>
+    <string name="theme_light" translatable="false">Светлая</string>
+    <string name="theme_dark" translatable="false">Тёмная</string>
+    <string name="add_new_note">Добавить заметку</string>
+    <string name="your_note">Твоя заметка</string>
+
+
+</resources>
