@@ -24,6 +24,7 @@ public class DialogShowNote extends DialogFragment {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(getActivity());
 
+
         LayoutInflater inflater =
                 getActivity().getLayoutInflater();
 

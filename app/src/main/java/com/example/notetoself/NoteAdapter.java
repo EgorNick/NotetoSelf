@@ -10,9 +10,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.notetoself.MainActivity;
-import com.example.notetoself.Note;
-import com.example.notetoself.R;
+
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder> {
 
@@ -39,8 +37,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
     public void onBindViewHolder(@NonNull NoteAdapter.ListItemHolder holder, int position) {
         Note note = mNoteList.get(position);
         holder.mTitle.setText(note.getTitle());
-        // Show the first 15 characters of the actual note
-        // Unless a short note then show half
+
         if(note.getDescription().length() > 15) {
             holder.mDescription.setText(note.getDescription()
                     .substring(0, 15));
@@ -50,7 +47,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
                     .substring(0, note.getDescription().length() /2 ));
         }
 
-        // What is the status of the note?
         if(note.isIdea()){
             holder.mStatus.setText(R.string.idea_text);
         }

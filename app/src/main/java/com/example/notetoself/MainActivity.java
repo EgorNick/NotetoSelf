@@ -31,12 +31,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Temporary code
-    //Note mTempNote = new Note();
 
     private JSONSerializer mSerializer;
 
-    //private List<Note> noteList = new ArrayList<>();
     private List<Note> noteList;
 
     private RecyclerView recyclerView;
@@ -74,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             noteList = mSerializer.load();
         } catch (Exception e) {
             noteList = new ArrayList<Note>();
-            Log.e("Ошибка в загрузки: ", "", e);
+            Log.e("Ошибка в загрузке: ", "", e);
         }
 
 
@@ -87,10 +84,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        // Add a neat dividing line between items in the list
-        //recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        // set the adapter
         recyclerView.setAdapter(mAdapter);
 
 
@@ -105,12 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
@@ -122,15 +112,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createNewNote(Note n){
-        // Temporary code
-        //mTempNote = n;
 
         noteList.add(n);
         mAdapter.notifyDataSetChanged();
     }
     public void deleteNote(Note n){
-        // Temporary code
-        //mTempNote = n;
 
         noteList.remove(n);
         mAdapter.notifyDataSetChanged();
@@ -156,13 +142,10 @@ public class MainActivity extends AppCompatActivity {
                 "dividers", true);
 
         if(mShowDividers) {
-            // Add a neat dividing line between list items
             recyclerView.addItemDecoration(
                     new DividerItemDecoration(
                             this, LinearLayoutManager.VERTICAL));
         }else{
-            // check there are some dividers
-            // or the app will crash
             if(recyclerView.getItemDecorationCount() > 0) {
                 recyclerView.removeItemDecorationAt(0);
             }
@@ -182,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-
         saveNotes();
 
     }
