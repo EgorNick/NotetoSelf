@@ -2,7 +2,9 @@ package com.example.notetoself;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
+import android.graphics.Color;
 import android.icu.text.DateFormat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,25 +52,24 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
         Date currentDate = calendar.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String formattedToday = sdf.format(currentDate);
-
+        if (formattedToday.charAt(3) == '0'){
+            formattedToday = formattedToday.substring(0, 3) + formattedToday.substring(4, formattedToday.length());
+        }
+        if (formattedToday.charAt(0) == '0') {
+            formattedToday = formattedToday.substring(1, formattedToday.length());
+        }
 
 
         // Устанавливаем отформатированную дату в TextView
         Note note = mNoteList.get(position);
+        if (note.getDate().equals(formattedToday)) {
+            holder.mDate.setTextColor(Color.RED);
+            }
         holder.mTitle.setText(note.getTitle());
         holder.mDate.setText(note.getDate());
 
-        if(note.getDate().equals(formattedToday)){
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Сегодня вам нужно сделать заметку!",
-                    Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        }
-
-        if(note.getDescription().length() > 15) {
-            holder.mDescription.setText(note.getDescription()
-                    .substring(0, 15));
+        if(note.getDescription().length() < 15) {
+            holder.mDescription.setText(formattedToday);
         }
         else{
             holder.mDescription.setText(note.getDescription()
