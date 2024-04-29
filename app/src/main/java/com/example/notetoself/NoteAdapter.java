@@ -1,13 +1,24 @@
 package com.example.notetoself;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+
+import android.icu.text.DateFormat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.WindowDecorActionBar;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -35,8 +46,25 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
 
     @Override
     public void onBindViewHolder(@NonNull NoteAdapter.ListItemHolder holder, int position) {
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String formattedToday = sdf.format(currentDate);
+
+
+
+        // Устанавливаем отформатированную дату в TextView
         Note note = mNoteList.get(position);
         holder.mTitle.setText(note.getTitle());
+        holder.mDate.setText(note.getDate());
+
+        if(note.getDate().equals(formattedToday)){
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Сегодня вам нужно сделать заметку!",
+                    Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
 
         if(note.getDescription().length() > 15) {
             holder.mDescription.setText(note.getDescription()
@@ -66,6 +94,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
 
     public class ListItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        TextView mDate;
         TextView mTitle;
         TextView mDescription;
         TextView mStatus;
@@ -76,6 +105,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
 
             mTitle =
                     view.findViewById(R.id.textViewTitle);
+            mDate = view.findViewById(R.id.dateViewStatus);
 
             mDescription =
                     view.findViewById(R.id.textViewDescription);

@@ -1,5 +1,6 @@
 package com.example.notetoself;
 // here was
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private NoteAdapter mAdapter;
 
     private SharedPreferences mPrefs;
-
-
 
 
     @Override
@@ -106,11 +105,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void createNewNote(Note n){
 
         noteList.add(n);
         mAdapter.notifyDataSetChanged();
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void deleteNote(Note n){
 
         noteList.remove(n);

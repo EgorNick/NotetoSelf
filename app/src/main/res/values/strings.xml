@@ -6,6 +6,8 @@
     <string name="action_add">Добавить</string>
     <string name="title_hint">Заголовок</string>
     <string name="description_hint">Описание</string>
+    <string name="date_text" translatable="false">Дата</string>
+    <string name="date_hint" translatable="false">День, месяц, год</string>
     <string name="idea_text">Идея</string>
     <string name="important_text">Важное</string>
     <string name="todo_text">Сделать</string>
