@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -60,20 +61,31 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
         }
 
 
-        // Устанавливаем отформатированную дату в TextView
         Note note = mNoteList.get(position);
         if (note.getDate().equals(formattedToday)) {
             holder.mDate.setTextColor(Color.RED);
             }
+
+        try {
+            Date noteDate = sdf.parse(note.getDate());
+            if (noteDate != null && noteDate.before(currentDate)) {
+                holder.mDate.setTextColor(Color.RED);
+            } else {
+                holder.mDate.setTextColor(Color.WHITE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         holder.mTitle.setText(note.getTitle());
         holder.mDate.setText(note.getDate());
 
         if(note.getDescription().length() < 15) {
-            holder.mDescription.setText(formattedToday);
+            holder.mDescription.setText(note.getDescription());
         }
-        else{
-            holder.mDescription.setText(note.getDescription()
-                    .substring(0, note.getDescription().length() /2 ));
+        else {
+            String truncatedDescription = note.getDescription().substring(0, note.getDescription().length() / 2) + "...";
+            holder.mDescription.setText(truncatedDescription);
         }
 
         if(note.isIdea()){
@@ -86,7 +98,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
             holder.mStatus.setText(R.string.todo_text);
         }
 
+
     }
+
 
     @Override
     public int getItemCount() {

@@ -2,10 +2,15 @@ package com.example.notetoself;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -22,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
         mPrefs = getSharedPreferences("Note to self", MODE_PRIVATE);
         mEditor = mPrefs.edit();
 
-        mShowDividers  = mPrefs.getBoolean("dividers", true);
+        mShowDividers = mPrefs.getBoolean("dividers", true);
 
         Switch switch1 = findViewById(R.id.switch1);
         // Set the switch on or off as appropriate
@@ -35,29 +40,51 @@ public class SettingsActivity extends AppCompatActivity {
                             CompoundButton buttonView,
                             boolean isChecked) {
 
-                        if(isChecked){
+                        if (isChecked) {
                             mEditor.putBoolean(
                                     "dividers", true);
 
                             mShowDividers = true;
 
-                        }else{
+                        } else {
                             mEditor.putBoolean(
                                     "dividers", false);
 
                             mShowDividers = false;
                         }
+                        // Анимация для визуального подтверждения действия
+                        ScaleAnimation anim = new ScaleAnimation(
+                                1f, 0.8f, // начальный и конечный масштабы по оси X
+                                1f, 0.8f, // начальный и конечный масштабы по оси Y
+                                Animation.RELATIVE_TO_SELF, 0.5f, // точка начала анимации по оси X
+                                Animation.RELATIVE_TO_SELF, 0.5f // точка начала анимации по оси Y
+                        );
+                        anim.setDuration(200); // продолжительность анимации
+                        anim.setRepeatCount(1); // количество повторений
+                        anim.setRepeatMode(Animation.REVERSE); // режим повторений
+                        buttonView.startAnimation(anim);
                     }
                 }
         );
+
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"your_email@example.com"});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Обратная связь по приложению Note to Self");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Здравствуйте,\n\nЯ хотел бы предложить следующее улучшение для вашего приложения:\n\n");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Отправить сообщение..."));
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(this, "Нет приложения для отправки электронной почты.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+        protected void onPause() {
+            super.onPause();
 
-        // Save the settings here
-        mEditor.commit();
+            // Save the settings here
+            mEditor.commit();
+        }
     }
-
-}
