@@ -76,41 +76,60 @@ public class SettingsActivity extends AppCompatActivity {
                 }
         );
 
-        Button changeColorButton = findViewById(R.id.changeColorButton);
-        changeColorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Получаем корневой View вашего приложения
-                View rootView = getWindow().getDecorView().getRootView();
+//        Работает с использованием AppUtils, смена цвета только в activity_settings и без сохранения
+//
+//        Button changeColorButton = findViewById(R.id.changeColorButton);
+//        changeColorButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int nextColor = AppUtils.getNextColor(SettingsActivity.this);
+//                AppUtils.setAppBackgroundColor(SettingsActivity.this, nextColor);
+//                Toast.makeText(SettingsActivity.this, "Цвет фона изменен", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        // Устанавливаем сохраненный цвет фона при загрузке активности
+//        int savedColor = mPrefs.getInt("backgroundColor", Color.WHITE);
+//        View rootView = getWindow().getDecorView().getRootView();
+//        rootView.setBackgroundColor(savedColor);
 
-                // Получаем следующий цвет из массива colors
-                int color = colors[colorIndex];
 
-                // Анимация плавного затухания и появления нового цвета
-                rootView.animate().alpha(0f).setDuration(300).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Устанавливаем новый цвет фона для корневого View
-                        rootView.setBackgroundColor(color);
-                        rootView.animate().alpha(1f).setDuration(300).start();
-                    }
-                });
-
-                // Сохраняем выбранный цвет в SharedPreferences
-                mEditor.putInt("backgroundColor", color);
-                mEditor.apply();
-
-                // Увеличиваем индекс цвета для переключения на следующий цвет в массиве colors
-                colorIndex = (colorIndex + 1) % colors.length;
-
-                Toast.makeText(SettingsActivity.this, "Цвет фона изменен", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Устанавливаем сохраненный цвет фона при загрузке активности
-        int savedColor = mPrefs.getInt("backgroundColor", Color.WHITE);
-        View rootView = getWindow().getDecorView().getRootView();
-        rootView.setBackgroundColor(savedColor);
+//        Работает(смена цвета только в activity_settings)
+//        Button changeColorButton = findViewById(R.id.changeColorButton);
+//        changeColorButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Получаем корневой View вашего приложения
+//                View rootView = getWindow().getDecorView().getRootView();
+//
+//                // Получаем следующий цвет из массива colors
+//                int color = colors[colorIndex];
+//
+//                // Анимация плавного затухания и появления нового цвета
+//                rootView.animate().alpha(0f).setDuration(300).withEndAction(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // Устанавливаем новый цвет фона для корневого View
+//                        rootView.setBackgroundColor(color);
+//                        rootView.animate().alpha(1f).setDuration(300).start();
+//                    }
+//                });
+//
+//                // Сохраняем выбранный цвет в SharedPreferences
+//                mEditor.putInt("backgroundColor", color);
+//                mEditor.apply();
+//
+//                // Увеличиваем индекс цвета для переключения на следующий цвет в массиве colors
+//                colorIndex = (colorIndex + 1) % colors.length;
+//
+//                Toast.makeText(SettingsActivity.this, "Цвет фона изменен", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        // Устанавливаем сохраненный цвет фона при загрузке активности
+//        int savedColor = mPrefs.getInt("backgroundColor", Color.WHITE);
+//        View rootView = getWindow().getDecorView().getRootView();
+//        rootView.setBackgroundColor(savedColor);
 
         // Всплывающее окно
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
@@ -124,6 +143,20 @@ public class SettingsActivity extends AppCompatActivity {
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(this, "Нет приложения для отправки электронной почты.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    public void onChangeColorButtonClick(View view) {
+        int nextColor = AppUtils.getNextColor(SettingsActivity.this);
+
+        // Сохраняем выбранный цвет фона в SharedPreferences
+        //AppUtils.saveBackgroundColor(SettingsActivity.this, nextColor);
+
+        // Применяем цвет фона к текущей активности (SettingsActivity)
+        AppUtils.setAppBackgroundColor(SettingsActivity.this, nextColor);
+
+        // Показываем сообщение об успешной смене цвета
+        Toast.makeText(this, "Цвет фона изменен", Toast.LENGTH_SHORT).show();
     }
 
     @Override

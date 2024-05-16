@@ -1,4 +1,5 @@
 package com.example.notetoself;
+
 // here was
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,8 +10,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Note> noteList;
 
     private RecyclerView recyclerView;
+
     private NoteAdapter mAdapter;
 
     private SharedPreferences mPrefs;
@@ -54,9 +54,8 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show(getSupportFragmentManager(), "");
 
             }
+
         });
-
-
 
         mSerializer = new JSONSerializer("NoteToSelf.json",
                 getApplicationContext());
@@ -80,7 +79,15 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(mAdapter);
 
+        //applySavedBackgroundColor();
+        // Применяем сохраненный цвет фона при создании активности
+        int savedColor = AppUtils.getSavedBackgroundColor(this);
+        AppUtils.setAppBackgroundColor(this, savedColor);
+    }
 
+    private void applySavedBackgroundColor() {
+        int savedColor = AppUtils.getSavedBackgroundColor(this);
+        AppUtils.setAppBackgroundColor(this, savedColor);
     }
 
     @Override
@@ -131,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
 
+        // Применяем сохраненный цвет фона при возобновлении активности
+        int savedColor = AppUtils.getSavedBackgroundColor(this);
+        AppUtils.setAppBackgroundColor(this, savedColor);
+        //applySavedBackgroundColor();
+
         mPrefs = getSharedPreferences(
                 "Note to self", MODE_PRIVATE);
 
@@ -146,8 +158,9 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.removeItemDecorationAt(0);
             }
         }
-
     }
+
+
 
     public void saveNotes(){
         try{

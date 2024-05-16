@@ -29,6 +29,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switch1"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:onClick="onChangeColorButtonClick" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
