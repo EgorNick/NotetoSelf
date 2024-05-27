@@ -66,18 +66,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }
         );
-
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"your_email@example.com"});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Обратная связь по приложению Note to Self");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Здравствуйте,\n\nЯ хотел бы предложить следующее улучшение для вашего приложения:\n\n");
-
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Отправить сообщение..."));
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(this, "Нет приложения для отправки электронной почты.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override

@@ -53,25 +53,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
         Date currentDate = calendar.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String formattedToday = sdf.format(currentDate);
-        if (formattedToday.charAt(3) == '0'){
-            formattedToday = formattedToday.substring(0, 3) + formattedToday.substring(4, formattedToday.length());
-        }
-        if (formattedToday.charAt(0) == '0') {
-            formattedToday = formattedToday.substring(1, formattedToday.length());
-        }
 
 
         Note note = mNoteList.get(position);
-        if (note.getDate().equals(formattedToday)) {
-            holder.mDate.setTextColor(Color.RED);
-            }
 
         try {
             Date noteDate = sdf.parse(note.getDate());
-            if (noteDate != null && noteDate.before(currentDate)) {
+            if (noteDate != null && noteDate.before(currentDate) || noteDate.before(currentDate)) {
                 holder.mDate.setTextColor(Color.RED);
             } else {
-                holder.mDate.setTextColor(Color.WHITE);
+                holder.mDate.setTextColor(Color.YELLOW);
             }
         } catch (Exception e) {
             e.printStackTrace();
