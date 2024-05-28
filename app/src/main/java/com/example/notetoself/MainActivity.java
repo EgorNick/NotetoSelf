@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private NoteAdapter mAdapter;
     private SharedPreferences mPrefs;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,13 +95,11 @@ public class MainActivity extends AppCompatActivity {
         noteList.remove(n);
         mAdapter.notifyDataSetChanged();
     }
-
     public void showNote(int noteToShow) {
         DialogShowNote dialog = new DialogShowNote();
         dialog.sendNoteSelected(noteList.get(noteToShow));
         dialog.show(getSupportFragmentManager(), "");
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -120,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
     public void saveNotes() {
         try {
             mSerializer.save(noteList);
