@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.TextView;
+import android.view.ViewGroup;
 
 public class AppUtils {
 
@@ -15,7 +17,23 @@ public class AppUtils {
     public static void setAppBackgroundColor(Context context, int color) {
         View rootView = ((Activity) context).getWindow().getDecorView();
         rootView.setBackgroundColor(color);
+        changeTextColor(rootView, color);
         saveBackgroundColor(context, color);
+    }
+
+    private static void changeTextColor(View rootView, int backgroundColor) {
+        int textColor = (backgroundColor == Color.BLACK) ? Color.WHITE : Color.BLACK;
+        if (rootView instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) rootView;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View child = viewGroup.getChildAt(i);
+                if (child instanceof TextView) {
+                    ((TextView) child).setTextColor(textColor);
+                } else if (child instanceof ViewGroup) {
+                    changeTextColor(child, backgroundColor); // recursive call
+                }
+            }
+        }
     }
 
     public static void saveBackgroundColor(Context context, int color) {
