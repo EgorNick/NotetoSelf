@@ -1,23 +1,24 @@
 package com.example.notetoself;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor mEditor;
-
     private boolean mShowDividers;
+    private int[] colors = {Color.WHITE, Color.BLACK, Color.GRAY, Color.CYAN};
+    private int colorIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,49 +31,48 @@ public class SettingsActivity extends AppCompatActivity {
         mShowDividers = mPrefs.getBoolean("dividers", true);
 
         Switch switch1 = findViewById(R.id.switch1);
-        // Set the switch on or off as appropriate
         switch1.setChecked(mShowDividers);
 
-        switch1.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-
-                    public void onCheckedChanged(
-                            CompoundButton buttonView,
-                            boolean isChecked) {
-
-                        if (isChecked) {
-                            mEditor.putBoolean(
-                                    "dividers", true);
-
-                            mShowDividers = true;
-
-                        } else {
-                            mEditor.putBoolean(
-                                    "dividers", false);
-
-                            mShowDividers = false;
-                        }
-                        // Анимация для визуального подтверждения действия
-                        ScaleAnimation anim = new ScaleAnimation(
-                                1f, 0.8f, // начальный и конечный масштабы по оси X
-                                1f, 0.8f, // начальный и конечный масштабы по оси Y
-                                Animation.RELATIVE_TO_SELF, 0.5f, // точка начала анимации по оси X
-                                Animation.RELATIVE_TO_SELF, 0.5f // точка начала анимации по оси Y
-                        );
-                        anim.setDuration(200); // продолжительность анимации
-                        anim.setRepeatCount(1); // количество повторений
-                        anim.setRepeatMode(Animation.REVERSE); // режим повторений
-                        buttonView.startAnimation(anim);
-                    }
+        switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mEditor.putBoolean("dividers", true);
+                    mShowDividers = true;
+                } else {
+                    mEditor.putBoolean("dividers", false);
+                    mShowDividers = false;
                 }
-        );
+                mEditor.apply();
+            }
+        });
+
+        Button changeColorButton = findViewById(R.id.changeColorButton);
+        changeColorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int nextColor = AppUtils.getNextColor(SettingsActivity.this);
+                AppUtils.setAppBackgroundColor(SettingsActivity.this, nextColor);
+                Toast.makeText(SettingsActivity.this, "Цвет фона изменен", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        applySavedBackgroundColor();
+    }
+
+    private void applySavedBackgroundColor() {
+        int savedColor = AppUtils.getSavedBackgroundColor(this);
+        AppUtils.setAppBackgroundColor(this, savedColor);
     }
 
     @Override
-        protected void onPause() {
-            super.onPause();
-
-            // Save the settings here
-            mEditor.commit();
-        }
+    protected void onResume() {
+        super.onResume();
+        applySavedBackgroundColor();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mEditor.commit();
+    }
+}
