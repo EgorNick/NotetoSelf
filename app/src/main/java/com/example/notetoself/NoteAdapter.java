@@ -62,7 +62,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ListItemHolder
             if (noteDate != null && noteDate.before(currentDate) || noteDate.before(currentDate)) {
                 holder.mDate.setTextColor(Color.RED);
             } else {
-                holder.mDate.setTextColor(Color.YELLOW);
+                holder.mDate.setTextColor(Color.GREEN);
             }
         } catch (Exception e) {
             e.printStackTrace();
